@@ -121,19 +121,3 @@ An interactive Python application that demonstrates Bézier curves and B-Splines
 **Usage**:
 - Called when users click color buttons
 - Updates both curve and button colors
-
----
-
-### Architecture Flow
-```mermaid
-graph TD
-    A[InteractiveCurves] --> B[CurveBase]
-    B --> C[BezierCurve]
-    B --> D[BSplineCurve]
-    A --> E[CurveRenderer]
-    A --> F[DeCasteljauAnimator]
-    A --> G[ButtonManager]
-    G --> H[ColorManager]
-    C <--> E
-    D <--> E
-    C <--> F
