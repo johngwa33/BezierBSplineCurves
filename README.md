@@ -24,7 +24,7 @@ An interactive Python application that demonstrates Bézier curves and B-Splines
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/BezierBSplineCurves.git
+   git clone https://github.com/johngwa33/BezierBSplineCurves.git
    cd BezierBSplineCurves
 
 2. Install required dependencies:
