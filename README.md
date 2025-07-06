@@ -35,3 +35,105 @@ An interactive Python application that demonstrates Bézier curves and B-Splines
 
    ```bash
    python main.py
+
+## Technical Details
+
+### Core Classes Overview
+
+#### `InteractiveCurves` (Inside main.py)
+**Purpose**: Manages the entire application workflow and user interactions  
+**Key Features**:
+- Creates dual-plot layout (Bézier left, B-Spline right)
+- Handles mouse events (dragging, panning, zooming)
+- Coordinates between curve objects and renderers  
+**Dependencies**: All other classes in the project
+
+---
+
+### Curve Base Classes
+
+#### `CurveBase` (Abstract Base Class)
+**Purpose**: Provides common functionality for both curve types  
+**Key Features**:
+- Implements control point management (add/remove/drag)
+- Computes convex hulls using SciPy
+- Maintains visualization state (color, hull visibility)  
+**Inherited By**: `BezierCurve`, `BSplineCurve`
+
+#### `BezierCurve`
+**Purpose**: Implements Bézier curve mathematics  
+**Key Algorithms**:
+- De Casteljau's algorithm (recursive and full-levels variants)  
+**Special Behavior**:
+- Colors endpoints differently from control points
+- Requires minimum 2 points for rendering
+
+#### `BSplineCurve`
+**Purpose**: Implements B-Spline mathematics  
+**Key Algorithms**:
+- Basis function calculation (recursive Cox-de Boor)
+- Non-uniform knot vector generation  
+**Special Behavior**:
+- Requires `degree + 1` points to render
+- Uses uniform purple coloring for all points
+
+---
+
+### Visualization Classes
+
+#### `CurveRenderer`
+**Purpose**: Handles all curve visualization aspects  
+**Key Features**:
+- Manages Matplotlib artists (lines, points, hulls)
+- Implements consistent styling for both curve types
+- Maintains aspect ratio and grid visibility
+
+#### `DeCasteljauAnimator`
+**Purpose**: Visualizes the Bézier construction process  
+**Key Features**:
+- Animated intermediate lines and points
+- Color-coded construction levels
+- Real-time trace of the curve being built  
+**Animation Control**:
+- Adjustable speed via `animation_speed`
+- Smooth interpolation between frames
+
+---
+
+### UI Components
+
+#### `ButtonManager`
+**Purpose**: Creates and manages interactive controls  
+**Key Features**:
+- Dynamically generates curve-specific buttons
+- Handles Tkinter dialogs for point coordinates
+- Manages button states during animation  
+**UI Patterns**:
+- Toggle buttons (Hull/Animate)
+- Cycling buttons (Colors)
+- Action buttons (Add/Remove/Reset)
+
+#### `ColorManager`
+**Purpose**: Maintains consistent color schemes  
+**Color Palette**:
+- 6 predefined aesthetically-matched colors
+- Cycling system with name display  
+**Usage**:
+- Called when users click color buttons
+- Updates both curve and button colors
+
+---
+
+### Architecture Flow
+```mermaid
+graph TD
+    A[InteractiveCurves] --> B[CurveBase]
+    B --> C[BezierCurve]
+    B --> D[BSplineCurve]
+    A --> E[CurveRenderer]
+    A --> F[DeCasteljauAnimator]
+    A --> G[ButtonManager]
+    G --> H[ColorManager]
+    C <--> E
+    D <--> E
+    C <--> F
